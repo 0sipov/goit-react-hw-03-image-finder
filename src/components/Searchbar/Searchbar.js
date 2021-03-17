@@ -6,15 +6,23 @@ class SearchBar extends Component {
     query: '',
   };
 
-  handleQuery = e => {
+  onChangeQuery = e => {
     this.setState({ query: e.target.value });
   };
 
   render() {
-    const { handleQuery } = this;
+    const { onChangeQuery } = this;
+    const { query } = this.state;
+    const { onFetchQuery } = this.props;
     return (
       <header className={styles.Searchbar}>
-        <form className={styles.SearchForm}>
+        <form
+          className={styles.SearchForm}
+          onSubmit={e => {
+            e.preventDefault();
+            onFetchQuery(query);
+          }}
+        >
           <button type="submit" className={styles.SearchFormButton}>
             <span className={styles.SearchFormButtonLabel}>Search</span>
           </button>
@@ -22,10 +30,10 @@ class SearchBar extends Component {
           <input
             className={styles.SearchFormInput}
             type="text"
-            autocomplete="off"
-            autofocus
+            autoComplete="off"
+            autoFocus
             placeholder="Search images and photos"
-            onChange={handleQuery}
+            onChange={onChangeQuery}
           />
         </form>
       </header>
