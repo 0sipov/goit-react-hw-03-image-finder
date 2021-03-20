@@ -5,7 +5,12 @@ class Modal extends Component {
   render() {
     const { isOpen, onSwitchModal, children } = this.props;
     return isOpen ? (
-      <div className={styles.Overlay} onClick={onSwitchModal}>
+      <div
+        className={styles.Overlay}
+        onClick={e => {
+          e.currentTarget === e.target && onSwitchModal();
+        }}
+      >
         <div className={styles.Modal}>{children}</div>
       </div>
     ) : null;

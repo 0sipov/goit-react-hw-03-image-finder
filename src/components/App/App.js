@@ -3,6 +3,7 @@ import Searchbar from '../Searchbar';
 import ImageGallery from '../ImageGallery';
 import ImageGalleryItem from '../ImageGalleryItem';
 import Modal from '../Modal';
+import Button from '../Button';
 import './App.module.css';
 import getImgs from '../../utilites/fetch';
 
@@ -12,13 +13,13 @@ class App extends Component {
     page: 1,
     isModalOpen: false,
     modalImg: '',
+    query: '',
   };
 
   handleSwitchModal = imgId => {
     if (!this.state.isModalOpen) {
       this.setState({
         modalImg: this.state.imgs.find(el => {
-          console.log(imgId);
           return +el.id === +imgId;
         }),
       });
@@ -29,15 +30,37 @@ class App extends Component {
   };
 
   handleFetchQuery = async query => {
-    this.setState({
+    return this.setState({
+      query: query,
+      page: 1,
       imgs: await getImgs(query, this.state.page),
     });
   };
 
+  handleAddQuery = () => {
+    getImgs(this.state.query, this.state.page + 1).then(r => {
+      this.setState(preState => ({
+        imgs: [...preState.imgs, ...r],
+        page: preState.page + 1,
+      }));
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth',
+      });
+    });
+
+    // this.setState(preState => ({
+    //   imgs: [
+    //     ...preState.imgs,
+    // ...getImgs(this.state.query, preState.page + 1).then(r => r),
+    //   ],
+    //   page: preState.page + 1,
+    // }));
+  };
+
   render() {
-    const { handleFetchQuery, handleSwitchModal } = this;
-    const { imgs, page, isModalOpen } = this.state;
-    console.log(this.state.modalImg);
+    const { handleFetchQuery, handleSwitchModal, handleAddQuery } = this;
+    const { imgs, isModalOpen, modalImg } = this.state;
     return (
       <>
         <Searchbar onFetchQuery={handleFetchQuery} />
@@ -54,8 +77,9 @@ class App extends Component {
             );
           })}
         </ImageGallery>
+        <Button onAddQuery={handleAddQuery} />
         <Modal isOpen={isModalOpen} onSwitchModal={handleSwitchModal}>
-          <img src={this.state.modalImg.largeImageURL} alt="" />
+          <img src={modalImg.largeImageURL} alt={modalImg.tags} />
         </Modal>
       </>
     );
