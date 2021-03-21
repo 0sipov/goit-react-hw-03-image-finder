@@ -9,7 +9,12 @@ const ImageGalleryItem = ({ src, alt, id, onSwitchModal }) => {
         onSwitchModal(el.target.id);
       }}
     >
-      <img src={src} alt={alt} id={id} className={styles.ImageGalleryItem} />
+      <img
+        src={src}
+        alt={alt}
+        id={id}
+        className={styles.ImageGalleryItemImage}
+      />
     </li>
   );
 };

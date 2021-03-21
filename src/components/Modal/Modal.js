@@ -3,7 +3,7 @@ import styles from './Modal.module.css';
 
 class Modal extends Component {
   render() {
-    const { isOpen, onSwitchModal, children } = this.props;
+    const { isOpen, onSwitchModal, src, alt } = this.props;
     return isOpen ? (
       <div
         className={styles.Overlay}
@@ -11,7 +11,9 @@ class Modal extends Component {
           e.currentTarget === e.target && onSwitchModal();
         }}
       >
-        <div className={styles.Modal}>{children}</div>
+        <div className={styles.Modal}>
+          <img src={src} alt={alt}></img>
+        </div>
       </div>
     ) : null;
   }
