@@ -15,7 +15,7 @@ class App extends Component {
   state = {
     imgs: [],
     page: 1,
-    perPage: 6,
+    perPage: 21,
     isModalOpen: false,
     isButtonVisible: false,
     isPreLoader: false,
@@ -36,6 +36,12 @@ class App extends Component {
     }
   };
 
+  isLastPage = totalHits => {
+    const { page, perPage } = this.state;
+    return totalHits / (perPage * (page + 1)) <= 1;
+    // return Math.ceil(totalHits / perPage) === page;
+  };
+
   handleFetchQuery = async query => {
     this.setState({ isPreLoader: true });
     if (query === '') {
@@ -47,13 +53,8 @@ class App extends Component {
         isPreLoader: false,
         imgs: await getImgs(query, this.state.page, this.state.perPage)
           .then(response => {
-            const { page, perPage } = this.state;
             this.setState({
-              isButtonVisible: !this.isLastPage(
-                page,
-                perPage,
-                response.data.totalHits,
-              ),
+              isButtonVisible: !this.isLastPage(response.data.totalHits),
             });
             return response.data.hits;
           })
@@ -65,21 +66,13 @@ class App extends Component {
     }
   };
 
-  isLastPage = (page, perPage, totalHits) => {
-    return totalHits / (perPage * (page + 1)) <= 1;
-  };
-
   handleAddQuery = () => {
     const { query, page, perPage } = this.state;
     this.setState({ isPreLoader: true });
     getImgs(query, page + 1, perPage)
       .then(response => {
         this.setState({
-          isButtonVisible: !this.isLastPage(
-            page,
-            perPage,
-            response.data.totalHits,
-          ),
+          isButtonVisible: !this.isLastPage(response.data.totalHits),
         });
         return response.data.hits;
       })
