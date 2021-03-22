@@ -15,7 +15,7 @@ class App extends Component {
   state = {
     imgs: [],
     page: 1,
-    perPage: 21,
+    perPage: 6,
     isModalOpen: false,
     isButtonVisible: false,
     isPreLoader: false,
@@ -39,7 +39,6 @@ class App extends Component {
   isLastPage = totalHits => {
     const { page, perPage } = this.state;
     return totalHits / (perPage * (page + 1)) <= 1;
-    // return Math.ceil(totalHits / perPage) === page;
   };
 
   handleFetchQuery = async query => {

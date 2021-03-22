@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Button.module.css';
+import PropTypes from 'prop-types';
 
 const Button = ({ onAddQuery }) => {
   return (
@@ -7,6 +8,10 @@ const Button = ({ onAddQuery }) => {
       Load more
     </button>
   );
+};
+
+Button.propTypes = {
+  onAddQuery: PropTypes.func,
 };
 
 export default Button;

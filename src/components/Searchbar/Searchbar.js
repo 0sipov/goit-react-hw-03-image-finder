@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from './Searchbar.module.css';
+import PropTypes from 'prop-types';
 
 class SearchBar extends Component {
   state = {
@@ -40,5 +41,9 @@ class SearchBar extends Component {
     );
   }
 }
+
+SearchBar.propTypes = {
+  onFetchQuery: PropTypes.func.isRequired,
+};
 
 export default SearchBar;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from './Modal.module.css';
+import PropTypes from 'prop-types';
 
 class Modal extends Component {
   render() {
@@ -18,5 +19,12 @@ class Modal extends Component {
     ) : null;
   }
 }
+
+Modal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  src: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+  onSwitchModal: PropTypes.func.isRequired,
+};
 
 export default Modal;
